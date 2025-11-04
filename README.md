@@ -102,7 +102,7 @@ docker start mysql4
 docker stop mysql4
 docker rm mysql4
 docker volume rm mysql4_data
-docker rmi mysql4:4.0.27
+docker rmi mysql:4.0.27
 ```
 
 ---
