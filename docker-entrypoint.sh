@@ -62,9 +62,14 @@ if [ -z "$(ls -A "$MYSQL_DATADIR" 2>/dev/null || true)" ]; then
   if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
     echo ">>> Setting root password and enabling remote root access..."
     SQL="UPDATE mysql.user SET Password=PASSWORD(\"$MYSQL_ROOT_PASSWORD\") WHERE User='root';
-      INSERT INTO mysql.user (Host,User,Password)
-      VALUES ('%','root',PASSWORD(\"$MYSQL_ROOT_PASSWORD\"));"
+DELETE FROM mysql.user WHERE Host='%' AND User='root';
+INSERT INTO mysql.user (Host,User,Password,
+  Select_priv,Insert_priv,Update_priv,Delete_priv,Create_priv,Drop_priv,Reload_priv,Shutdown_priv,Process_priv,
+  File_priv,Grant_priv,References_priv,Index_priv,Alter_priv)
+VALUES ('%','root',PASSWORD(\"$MYSQL_ROOT_PASSWORD\"),
+  'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y');"
     echo "$SQL" | "$MYSQL_CLIENT" || true
+    echo "FLUSH PRIVILEGES;" | "$MYSQL_CLIENT" || true
   else
     echo ">>> WARNING: MYSQL_ROOT_PASSWORD not set — root will have empty password (insecure)."
   fi
