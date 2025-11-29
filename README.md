@@ -33,6 +33,7 @@ This is mainly intended for **legacy software compatibility**, such as old PHP 4
 git clone https://github.com/mrizkihidayat66/mysql-4.0.27-docker.git
 cd mysql-4.0.27-docker
 ```
+> ⚠️ Ensure that `docker-entrypoint.sh` uses LF line endings instead of CRLF.
 
 ### 2️⃣ Build the Docker image
 
